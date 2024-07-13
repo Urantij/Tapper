@@ -53,7 +53,7 @@ public static partial class RoslynExtensions
 
     private static INamedTypeSymbol[]? TargetTypes;
 
-    public static INamedTypeSymbol[] GetSourceTypes(this Compilation compilation, bool includeReferencedAssemblies)
+    public static INamedTypeSymbol[] GetSourceTypes(this Compilation compilation, bool includeReferencedAssemblies, string targetNamespace)
     {
         if (TargetTypes is not null)
         {
@@ -69,6 +69,11 @@ public static partial class RoslynExtensions
             {
                 var attributes = x.GetAttributes();
 
+                string? name = x.ContainingNamespace?.ToString();
+
+                if (name?.StartsWith(targetNamespace) == true)
+                    return true;
+                
                 if (attributes.IsEmpty)
                 {
                     return false;

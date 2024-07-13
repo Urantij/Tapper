@@ -14,7 +14,7 @@ public class DefaultTypeMapperProvider : ITypeMapperProvider
 
     private readonly IDictionary<ITypeSymbol, ITypeMapper> _mappers;
 
-    public DefaultTypeMapperProvider(Compilation compilation, bool includeReferencedAssemblies)
+    public DefaultTypeMapperProvider(Compilation compilation, bool includeReferencedAssemblies, string targetNamespace)
     {
         _arrayTypeMapper = new ArrayTypeMapper(compilation);
         _tupleTypeMapper = new TupleTypeMapper();
@@ -28,7 +28,7 @@ public class DefaultTypeMapperProvider : ITypeMapperProvider
         var collectionTypeTypeMappers = CollectionTypeTypeMappers.Create(compilation);
         var dictionaryTypeMappers = DictionaryTypeMappers.Create(compilation);
 
-        var sourceTypeMapper = compilation.GetSourceTypes(includeReferencedAssemblies)
+        var sourceTypeMapper = compilation.GetSourceTypes(includeReferencedAssemblies, targetNamespace)
             .Select(static x => new SourceTypeMapper(x));
 
         var typeMappers = sourceTypeMapper.Concat(primitiveTypeMappers)

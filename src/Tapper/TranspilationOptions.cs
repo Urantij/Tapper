@@ -24,6 +24,8 @@ public class TranspilationOptions : ITranspilationOptions
     public bool ReferencedAssembliesTranspilation { get; }
 
     public bool EnableAttributeReference { get; }
+    
+    public string TargetNamespace { get; }
 
     public TranspilationOptions(
         Compilation compilation,
@@ -33,17 +35,18 @@ public class TranspilationOptions : ITranspilationOptions
         NewLineOption newLineOption,
         int indent,
         bool referencedAssembliesTranspilation,
-        bool enableAttributeReference)
+        bool enableAttributeReference, 
+        string targetNamespace)
         : this(
               compilation,
-              new DefaultTypeMapperProvider(compilation, referencedAssembliesTranspilation),
+              new DefaultTypeMapperProvider(compilation, referencedAssembliesTranspilation, targetNamespace),
               serializerOption,
               namingStyle,
               enumStyle,
               newLineOption,
               indent,
               referencedAssembliesTranspilation,
-              enableAttributeReference)
+              enableAttributeReference, targetNamespace)
     {
     }
 
@@ -56,11 +59,12 @@ public class TranspilationOptions : ITranspilationOptions
         NewLineOption newLineOption,
         int indent,
         bool referencedAssembliesTranspilation,
-        bool enableAttributeReference)
+        bool enableAttributeReference,
+        string targetNamespace)
     {
         TypeMapperProvider = typeMapperProvider;
         SpecialSymbols = new SpecialSymbols(compilation);
-        SourceTypes = compilation.GetSourceTypes(referencedAssembliesTranspilation);
+        SourceTypes = compilation.GetSourceTypes(referencedAssembliesTranspilation, targetNamespace);
         SerializerOption = serializerOption;
         NamingStyle = namingStyle;
         EnumStyle = enumStyle;
@@ -68,5 +72,6 @@ public class TranspilationOptions : ITranspilationOptions
         Indent = indent;
         ReferencedAssembliesTranspilation = referencedAssembliesTranspilation;
         EnableAttributeReference = enableAttributeReference;
+        this.TargetNamespace = targetNamespace;
     }
 }

@@ -15,7 +15,7 @@ public class TypeScriptCodeGenerator : ICodeGenerator
     {
         _transpilationOptions = options;
 
-        _sourceTypes = compilation.GetSourceTypes(options.ReferencedAssembliesTranspilation);
+        _sourceTypes = compilation.GetSourceTypes(options.ReferencedAssembliesTranspilation, options.TargetNamespace);
 
         _newLineString = options.NewLine.ToNewLineString();
         _typeTranslatorProvider = new TypeTranslatorProviderBuilder(options.EnumStyle).Build();

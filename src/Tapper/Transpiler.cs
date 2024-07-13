@@ -26,7 +26,7 @@ public class Transpiler
             options
         );
 
-        _targetTypes = compilation.GetSourceTypes(options.ReferencedAssembliesTranspilation);
+        _targetTypes = compilation.GetSourceTypes(options.ReferencedAssembliesTranspilation, options.TargetNamespace);
         _targetTypeLookupTable = _targetTypes.ToLookup<INamedTypeSymbol, INamespaceSymbol>(static x => x.ContainingNamespace, SymbolEqualityComparer.Default);
     }
 

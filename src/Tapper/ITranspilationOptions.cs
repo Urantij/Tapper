@@ -16,6 +16,7 @@ public interface ITranspilationOptions
     int Indent { get; }
     bool ReferencedAssembliesTranspilation { get; }
     bool EnableAttributeReference { get; }
+    string TargetNamespace { get; }
 }
 
 public enum SerializerOption

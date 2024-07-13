@@ -22,6 +22,8 @@ public class App : ConsoleAppBase
 
     [RootCommand]
     public async Task Transpile(
+        [Option("target", "неймспейс который превратить в пиво")]
+        string targetNamespace,
         [Option("p", "Path to the project file (XXX.csproj)")]
         string project,
         [Option("o", "Output directory")]
@@ -49,7 +51,8 @@ public class App : ConsoleAppBase
         {
             var compilation = await this.CreateCompilationAsync(project);
 
-            await TranspileCore(compilation, output, newLine, indent, assemblies, serializer, namingStyle, @enum, attribute);
+            await TranspileCore(compilation, output, newLine, indent, assemblies, serializer, namingStyle, @enum,
+                attribute, targetNamespace);
 
             _logger.Log(LogLevel.Information, "======== Transpilation is completed. ========");
             _logger.Log(LogLevel.Information, "Please check the output folder: {output}", output);
@@ -88,7 +91,8 @@ public class App : ConsoleAppBase
         SerializerOption serializerOption,
         NamingStyle namingStyle,
         EnumStyle enumStyle,
-        bool enableAttributeReference)
+        bool enableAttributeReference,
+        string targetNamespace)
     {
         var options = new TranspilationOptions(
             compilation,
@@ -98,7 +102,8 @@ public class App : ConsoleAppBase
             newLine,
             indent,
             referencedAssembliesTranspilation,
-            enableAttributeReference
+            enableAttributeReference,
+            targetNamespace
         );
 
         var transpiler = new Transpiler(compilation, options, _logger);
